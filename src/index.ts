@@ -12,11 +12,10 @@ import authMiddleware from "./middleware/auth.middleware";
 
 import loginRouter from "./routers/login.router";
 
-import reimbursmentsRouter from "./routers/reimbursements.router";
+import reimbursementRouter from "./routers/reimbursements.router";
 
 import { foo } from "./dao/reimbursment.dao";
 
-foo();
 
 const app = express();
 
@@ -60,7 +59,7 @@ app.use((req, res) => {
     console.log(`You can't access this`);
     res.sendStatus(400);
 });
-//don't send bad request mmkay
+//don't send bad request 
 
 app.listen(3000);
 console.log('application started on port 3000');
