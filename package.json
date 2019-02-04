@@ -11,7 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "express": "^4.16.4",
     "express-session": "^1.15.6",
     "pg": "^7.8.0"
   },
@@ -20,6 +19,8 @@
     "@types/express-session": "^1.15.11",
     "@types/node": "^10.12.18",
     "@types/pg": "^7.4.11",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
     "nodemon": "^1.18.9",
     "ts-node": "^8.0.1",
     "typescript": "^3.2.4"
