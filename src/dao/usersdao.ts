@@ -4,11 +4,11 @@ import { Connection } from 'pg';
 import { buildUsersForPromiseAll } from '../utils/buildUserForPromiseAll';
 
 
-export async function findAll(): Promise<Users[]> { //find all the users from database requires a promise because request to database
+export async function findAllUsers(): Promise<Users[]> { //find all the users from database requires a promise because request to database
   const client = await ConnectionPool.connect(); //connect to dbase await cause promise
   try {
     const result = await client.query( 
-      'SELECT * FROM Project0.users' //dbname is Project0 and I want to get the users from there.
+      'SELECT * FROM project0.users' //dbname is Project0 and I want to get the users from there.
     );
     return Promise.all(result.rows.map(async(sqlUser) => { //cool functionality I found on a blog that I can return essentially an array of promises instead of doing it separately
       return await buildUsersForPromiseAll(sqlUser); //goes to a build for this specific functionality conversed with Alec to see how he was doing this and thought it sounded intelligent so did it myself
@@ -17,7 +17,10 @@ export async function findAll(): Promise<Users[]> { //find all the users from da
     client.release(); // releases connection...ya...
   }
 }
-/* export async function authenticate(username: string, password: string): Promise<Object> { //attempt at JWTs see more on login router
+/* 
+Attempted to use JWT, decided against it, but kept code in case I wanted to go back to it.
+
+export async function authenticate(username: string, password: string): Promise<Object> { //attempt at JWTs see more on login router
     const client = await ConnectionPool.connect();
     try{
         const loginResult = await client.query(  // grab what we need to grab to authenticate who is trying to log in.
@@ -36,21 +39,48 @@ finally {
 }
 } */
 
-export async function findById(id: number): Promise<Users> { //a more specific find
+export async function findUserById(id: number): Promise<Users> { //a more specific find
   const client = await ConnectionPool.connect();
   try {
     const result = await client.query(
-      'SELECT * FROM users WHERE user_id = $1',
+      'SELECT * FROM project0.users WHERE userid = $1',
       [id]
     );
     const returnedUser = result.rows[0]; // there should only be 1 record
     if (returnedUser) {
       return {
-        userId: returnedUser['userid'],
+        userid: returnedUser['userid'],
         username: returnedUser.username,
         password: '', // don't send back the passwords that's pretty unsafe
-        firstName: returnedUser.firstname,
-        lastName: returnedUser.lastname,
+        firstname: returnedUser.firstname,
+        lastname: returnedUser.lastname,
+        email: returnedUser.email,
+        role: returnedUser.role
+      };
+    } else {
+      return undefined;
+    }
+  } finally {
+    client.release(); // release connection
+  }
+}
+export async function findUserByName(name: string): Promise<Users> { //a more specific find
+  const client = await ConnectionPool.connect();
+  console.log('here');
+  try {
+    const result = await client.query(
+      'SELECT * FROM project0.users WHERE username = $1',
+      [name]
+    );
+ /*    console.log(result.rows[0]); */
+    const returnedUser = result.rows[0]; // there should only be 1 record
+    if (returnedUser) {
+      return {
+        userid: returnedUser['userid'],
+        username: returnedUser.username,
+        password: returnedUser.password, // don't send back the passwords that's pretty unsafe
+        firstname: returnedUser.firstname,
+        lastname: returnedUser.lastname,
         email: returnedUser.email,
         role: returnedUser.role
       };
@@ -62,27 +92,41 @@ export async function findById(id: number): Promise<Users> { //a more specific f
   }
 }
 
-export async function update(user: Users): Promise<Users> { //update users info in database
+export async function update(req){ //update users info in database
   const client = await ConnectionPool.connect();
   try {
-    const result = await client.query(
-      `UPDATE users (username, password, name)
-        VALUES  ($1, $2, $3)
-        RETURNING userid`,
-      [user.username, user.password, user.firstName]
-    );
-    if (result.rows[0]) {
-      const id = result.rows[0].userid;
-      return {
-        ...user,
-        userId: id
-      };
-    } else {
-      return undefined;
-    }
+      console.log(req.body.userid);
+      console.log(+req.body.userid);
+        let userToBeUpdated = await findUserById(+req.body.userid)
+        console.log('update value: ' + userToBeUpdated.role);
+        if(userToBeUpdated){
+          userToBeUpdated.username = req.body.username || userToBeUpdated.username;
+          userToBeUpdated.password = req.body.password || userToBeUpdated.password;
+          userToBeUpdated.firstname = req.body.firstname || userToBeUpdated.firstname;
+          userToBeUpdated.lastname = req.body.lastname || userToBeUpdated.lastname;
+          userToBeUpdated.email = req.body.email || userToBeUpdated.email;
+          userToBeUpdated.role = req.body.role || userToBeUpdated.role;
+        }
+        else {
+          console.log('first else');
+          return -1;
+      }
+/*       console.log(!Number.isInteger(userToBeUpdated.role))
+      console.log(userToBeUpdated.role); */
 
-  } finally {
+/*       if (!Number.isInteger(userToBeUpdated.role)){
+        return -1;
+      } */
+      console.log(userToBeUpdated);
+      const returnQuery = await client.query(
+        `UPDATE project0.users set username = $1, password = $2, 
+        firstname = $3, lastname = $4, email = $5,
+         role = $7 WHERE userid = $6 returning *`,
+         [userToBeUpdated.username,userToBeUpdated.password,userToBeUpdated.firstname,userToBeUpdated.lastname,userToBeUpdated.email,
+          userToBeUpdated.userid, userToBeUpdated.role]); //so this will update all the thing that it has supplied with the thing it has supplied, but leave it otherwise blank.
+      return returnQuery.rows[0];
+    }
+   finally {
     client.release(); // release connection
   }
-}
 }

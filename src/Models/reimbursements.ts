@@ -1,6 +1,6 @@
 import { ReimbursementStatuses } from "./reimbursementStatuses";
 import { ReimbursementTypes } from "./reimbursementtypes";
-export class User {
+export class Reimbursement {
     
     reimbursementId: number;// primary key
     author: number;  // foreign key -> User, not null

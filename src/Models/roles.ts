@@ -1,5 +1,5 @@
 export class Role {
-    roleId: number;
+    roleid: number;
     role: string;
   
    /*  constructor(roleId = 0, role = 'user') {

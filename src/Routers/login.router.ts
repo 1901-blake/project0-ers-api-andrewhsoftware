@@ -1,10 +1,10 @@
-import * as usersDao from '../dao/usersdao';
+import * as usersDao from '../dao/usersDao';
 import express from 'express';
-import jwt from 'jsonwebtoken';
 
-export const loginRouter = express.Router();
+/* Commented out because decided against using JWTs for this build.    
 
-/* export async function login(req: any, res) {
+
+export async function login(req: any, res) {
 
     const username = req.body.username;
     const password = req.body.password;
@@ -20,23 +20,20 @@ export const loginRouter = express.Router();
 
     } else { console.log('Error: Could not Log in')}
 } */
-loginRouter.post('/login', (req, res) => {
-    console.log(req.body);
-    if (req.body.username === 'blake' && req.body.password === 'password') {
-      const user = {
-        username: req.body.username,
-        role: 'admin'
-      };
-      req.session.user = user;
-      res.json(user);
-    } else if (req.body.username === 'hank' && req.body.password === 'password') {
-      const user = {
-        username: req.body.username,
-        role: 'associate'
-      };
-      req.session.user = user;
-      res.json(user);
-    } else {
-      res.sendStatus(401);
+export const loginRouter = express.Router();
+
+loginRouter.post('', async (req,res) => {
+/*     console.log(req.body.username);
+    console.log(req.body.password); */
+    const user = await usersDao.findUserByName(req.body.username); //this sends it to the Dao to verify it is a user
+/*     console.log(user.password); */
+    if(req.body.password !== user.password){
+        res.sendStatus(401); // bad username or password so sends error
     }
-  });
+    else {
+        user.password = ""
+        req.session.user = user; //otherwise yay you're a valid user.
+        res.json(user);
+    }
+
+});

@@ -2,11 +2,11 @@ import { Role } from "./roles";
 
 
 export class Users {
-    userId: number;
+    userid: number;
     username: string;
     password: string;
-    firstName: string;
-    lastName: string;
+    firstname: string;
+    lastname: string;
     email: string
     role: Role;
   
