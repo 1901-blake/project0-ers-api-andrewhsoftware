@@ -1,5 +1,5 @@
 export class ReimbursementStatuses {
-    statusId: number;
+    statusid: number;
     status: string;
   
    /*  constructor(statusId = 0, status = '') {

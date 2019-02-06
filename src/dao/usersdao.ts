@@ -45,11 +45,13 @@ export async function findUserById(id: number): Promise<Users> { //a more specif
     const result = await client.query(
       'SELECT * FROM project0.users WHERE userid = $1',
       [id]
+      
     );
+    console.log('query success');
     const returnedUser = result.rows[0]; // there should only be 1 record
     if (returnedUser) {
       return {
-        userid: returnedUser['userid'],
+        userid: returnedUser.userid,
         username: returnedUser.username,
         password: '', // don't send back the passwords that's pretty unsafe
         firstname: returnedUser.firstname,
@@ -58,6 +60,7 @@ export async function findUserById(id: number): Promise<Users> { //a more specif
         role: returnedUser.role
       };
     } else {
+      console.log("find users by id else")
       return undefined;
     }
   } finally {

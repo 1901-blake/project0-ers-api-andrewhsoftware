@@ -2,11 +2,11 @@ import { ReimbursementStatuses } from "./reimbursementStatuses";
 import { ReimbursementTypes } from "./reimbursementtypes";
 export class Reimbursement {
     
-    reimbursementId: number;// primary key
+    reimbursementid: number;// primary key
     author: number;  // foreign key -> User, not null
     amount: number;  // not null
-    dateSubmitted: number; // not null
-    dateResolved: number; // not null
+    datesubmitted: number; // not null
+    dateresolved: number; // not null
     description: string; // not null
     resolver: number; // foreign key -> User
     status: ReimbursementStatuses; // foreign key -> ReimbursementStatus, not null

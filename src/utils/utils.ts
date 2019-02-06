@@ -1,4 +1,4 @@
-export function updateWith<Q>(initialObject: Q, updatedObject: Q): Q {
+/* export function updateWith<Q>(initialObject: Q, updatedObject: Q): Q {
     let result: Q = initialObject;
     for (const key in Object.keys(updatedObject)) {
         if (typeof(key) != 'undefined') {
@@ -6,4 +6,4 @@ export function updateWith<Q>(initialObject: Q, updatedObject: Q): Q {
         }
     }
     return result;
-}
+} */

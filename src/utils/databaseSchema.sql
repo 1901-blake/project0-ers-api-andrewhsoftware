@@ -70,6 +70,26 @@ insert into project0.reimbursementtypes (typeid,type)
 values (4,'Other');
 
 
+insert into project0.reimbursements (author,amount,datesubmitted,dateresolved,description,status,type,reimbursementid) 
+values (1,100,'2019-02-05','2019-02-05', 'work please', 1, 1, default)
+            returning *;
 
+insert into project0.reimbursements (author,amount,datesubmitted,dateresolved,description,status,type,resolver,reimbursementid) 
+values (1,100,'2018-02-05','2019-02-05', 'work please', 2, 1,1, default)
+            returning *;
 
+insert into project0.reimbursements (author,amount,datesubmitted,dateresolved,description,status,type,resolver,reimbursementid) 
+values (1,100,'2017-02-05','2018-02-05', 'work please', 3, 2,1, default)
+            returning *;
 
+insert into project0.users (userid,username,password,firstname,lastname,email,role) 
+values (default, 'johndoe','johndoe','john','doe','johndoe@johndoe.com',2)
+
+insert into project0.users (userid,username,password,firstname,lastname,email,role) 
+values (default, 'bondjames','bond','james','bond','bondjames@bond.com',2)
+
+insert into project0.users (userid,username,password,firstname,lastname,email,role) 
+values (default, 'chikondi','nethenal','chikondi','nethenal','chikondi@love.com',2)
+
+insert into project0.users (userid,username,password,firstname,lastname,email,role) 
+values (default, 'seyyed','julij','seyyed','julij','seyyedjulij@nigerianprince.com',3)

@@ -1,6 +1,6 @@
 import express from 'express'
 import * as userDao from "../dao/usersDao"
-import { checkIfUserIsAdmin, checkIfUserIsTheRequiredRole, userIsLoggedIn } from '../middleware/authLoginMiddleware';
+import { checkIfUserIsAdmin, checkIfUserIsTheRequiredRole, userIsLoggedIn, checkIfUserIsFinanceManagerOrAdmin } from '../middleware/authLoginMiddleware';
 
 export const usersRouter = express.Router();
 
@@ -16,7 +16,7 @@ usersRouter.get('', [userIsLoggedIn, checkIfUserIsTheRequiredRole, async (req, r
     }
 
 }]);
-usersRouter.get('', [userIsLoggedIn, checkIfUserIsTheRequiredRole, async (req, res) => {
+/* usersRouter.get('', [userIsLoggedIn, checkIfUserIsTheRequiredRole, async (req, res) => {
 
     try{
         const users = await userDao.findAllUsers();
@@ -26,11 +26,11 @@ usersRouter.get('', [userIsLoggedIn, checkIfUserIsTheRequiredRole, async (req, r
         res.sendStatus(500);
     }
 
-}]);
+}]); */
 
-/* usersRouter.get('/:username',[userIsLoggedIn, checkIfUserIsTheRequiredRole, async (req, res) => {
-    const idParam = +req.params.userId;
-    console.log(+req.params.userId);
+usersRouter.get('/:id',[userIsLoggedIn, checkIfUserIsTheRequiredRole, async (req, res) => {
+    const idParam = req.params.id;
+    console.log(req.params.id);
     try{
         const user = await userDao.findUserById(idParam);
         if(user){
@@ -44,7 +44,7 @@ usersRouter.get('', [userIsLoggedIn, checkIfUserIsTheRequiredRole, async (req, r
     }
 
 }]);
- */
+ 
 
 usersRouter.patch('',[userIsLoggedIn, checkIfUserIsAdmin, async (req, res) => {
     try{
