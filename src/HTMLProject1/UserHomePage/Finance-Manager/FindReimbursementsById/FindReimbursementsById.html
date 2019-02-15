@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="FindReimbursementsById.css">
+    <script src="FindReimbursementsById.js"></script>
+</head>
+
+
+</head>
+
+<body>
+
+    <html lang="en-US">
+
+    <head>
+        <meta charset="utf-8">
+        <title>Home</title>
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700">
+
+    </head>
+
+    <body class="news">
+        <header>
+            <div class="nav">
+                <ul>
+                    <li class="home"><a
+                            href="http://localhost:5500/Project-0/project0-ers-api-andrewhsoftware/src/HTMLProject1/UserHomePage/home.html">Home</a>
+                    </li>
+                    <li id="myReimbursements" class="MyReimbursements"><a
+                            href="http://localhost:5500/Project-0/project0-ers-api-andrewhsoftware/src/HTMLProject1/UserHomePage/MyReimbursements/myReimbursements.html">My
+                            Reimbursements</a></li>
+                    <li class="UserDetails"><a
+                            href="http://localhost:5500/Project-0/project0-ers-api-andrewhsoftware/src/HTMLProject1/UserHomePage/UserDetails/userDetails.html">User
+                            Details</a></li>
+                    <li id="finance-manager" class="Finance-Manager"><a
+                            href="http://localhost:5500/Project-0/project0-ers-api-andrewhsoftware/src/HTMLProject1/UserHomePage/Finance-Manager/finance-Manager.html">Finance-Manager</a>
+                    </li>
+                    <li id="admin" class="Admin"><a
+                            href="http://localhost:5500/Project-0/project0-ers-api-andrewhsoftware/src/HTMLProject1/UserHomePage/Admin/admin.html">Admin</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="nav1">
+                <ul>
+                    <li class="SeeAllUsers"><a
+                            href="http://localhost:5500/Project-0/project0-ers-api-andrewhsoftware/src/HTMLProject1/UserHomePage/Finance-Manager/SeeAllUsers/SeeAllUsers.html">See
+                            All Users</a></li>
+                    <li id="myReimbursements" class="MyReimbursements"><a
+                            href="http://localhost:5500/Project-0/project0-ers-api-andrewhsoftware/src/HTMLProject1/UserHomePage/Finance-Manager/FindReimbursementsById/FindReimbursementsById.html">Find
+                            Reimbursements By Id</a></li>
+                    <li class="UserDetails"><a
+                            href="http://localhost:5500/Project-0/project0-ers-api-andrewhsoftware/src/HTMLProject1/UserHomePage/Finance-Manager/FindReimbursementsByStatus/findReimbursementsByStatus.html">Find
+                            Reimbursements By Status</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <body>
+            <table id="FindReimbursementsByIdTable" class="FindReimbursementsByIdTable">
+                <tr id="Reimbursements">
+                    <th class="Table_display" id="Reimbursement_Id">Reimbursement Id</th>
+                    <th class="Table_display" id="author">Author</th>
+                    <th class="Table_display" id="amount">Amount</th>
+                    <th class="Table_display" id="dateSubmitted">Date Submitted</th>
+                    <th class="Table_display" id="dateResolved">Date Resolved</th>
+                    <th class="Table_display" id="description">Description</th>
+                    <th class="Table_display" id="Resolver">Resolver</th>
+                    <th class="Table_display" id="status">Status</th>
+                    <th class="Table_display" id="type">Type</th>
+                </tr>
+            </table>
+            <tr>
+                <form action="" onsubmit="ReimbursementsById()" name='form-login'>
+                    <input type="text" id="submit_userid" placeholder="id">
+                    <button value=submit>Find Reimbursement by User ID</button>
+                    <p id="error-message"></p>
+                </form>
+            </tr>
+            <tr>
+                <form action="" onsubmit="Update_Reimbursement(event)" name='form-login'>
+                    <input type="number" id="submit_reimbursementid" placeholder="id">
+                    <input type="number" id="submit_status" placeholder="status">
+                    <select name="" id="submit_type">
+                        <option value="Lodging">Lodging</option>
+                        <option value="Travel">Travel</option>
+                        <option value="Food">Food</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <button value=submit>Update Reimbursement</button>
+                    <p id="error-message"></p>
+                </form>
+            </tr>
+        </body>
+    </body>

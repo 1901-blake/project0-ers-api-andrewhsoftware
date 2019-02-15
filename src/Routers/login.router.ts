@@ -23,17 +23,31 @@ export async function login(req: any, res) {
 export const loginRouter = express.Router();
 
 loginRouter.post('', async (req,res) => {
-/*     console.log(req.body.username);
-    console.log(req.body.password); */
+    try{
+    console.log(req.body.username);
+    console.log(req.body.password);
     const user = await usersDao.findUserByName(req.body.username); //this sends it to the Dao to verify it is a user
-/*     console.log(user.password); */
-    if(req.body.password !== user.password){
+
+    console.log("After Fetch");
+    console.log(user.password);
+    console.log(user.username);
+    console.log('User Fetch value: '+user);
+
+    if(user == undefined){
+        console.log("before res");
+        res.sendStatus(401);
+        console.log("after res");
+    }
+    else if(req.body.password !== user.password){
         res.sendStatus(401); // bad username or password so sends error
     }
-    else {
+    else  {
         user.password = ""
         req.session.user = user; //otherwise yay you're a valid user.
         res.json(user);
     }
-
+    } catch(e){
+        req.next(e)
+    }
 });
+

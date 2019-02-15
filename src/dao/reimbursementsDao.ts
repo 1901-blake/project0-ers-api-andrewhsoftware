@@ -12,7 +12,7 @@ export async function findReimbursementsByUser(userid: number): Promise<Reimburs
         'SELECT * FROM project0.reimbursements WHERE author = $1 ORDER BY datesubmitted ASC',
         [userid]
       );
-      console.log(result);
+      console.log(result.rows);
       if(result){
         return Promise.all(result.rows.map(async (reimbursements) => {
           return await buildReimbursementsForPromiseAll(reimbursements);
@@ -99,13 +99,15 @@ export async function update(reimbursement: Reimbursement) {
         if (reimbursement.status.statusid === (1)) {
             currentDate = undefined;
         }
+        console.log("This is the status" + reimbursement.status + "This is the type:" + reimbursement.type + "This is the reimbursement id:" + reimbursement.reimbursementid);
         const result = await client.query(
-            `update project0.reimbursements set author = $1, amount = $2, datesubmitted = $3, dateresolved = $4,
-             description =$5, status = $6, type = $7 where reimbursementid = $8
+            `update project0.reimbursements set dateresolved = $1,
+              status = $2, type = $3, resolver = $4 where reimbursementid = $5
             returning *;`,
-            [reimbursement.author, reimbursement.amount, reimbursement.datesubmitted, currentDate, reimbursement.description, reimbursement.status, reimbursement.type, reimbursement.reimbursementid,]
+            [currentDate, reimbursement.status, reimbursement.type, reimbursement.resolver , reimbursement.reimbursementid,]
         );
-        console.log(result.rows[0])
+        
+        console.log("The result for update is " + result.rows[0])
         if (result.rows[0]) {
             const reimbursement = result.rows[0];
             return ({
@@ -136,7 +138,7 @@ export async function addReimbursement(reimbursement: Reimbursement) {
             `INSERT into project0.reimbursements (author,amount, datesubmitted, dateresolved, description,status,type,reimbursementid) 
             values ($1,$2,$3, $4, $5, $6,$7, default)
                         returning *;`,
-            [reimbursement.author, reimbursement.amount, currentDate, currentDate, reimbursement.description, reimbursement.status, reimbursement.type]
+            [reimbursement.author, reimbursement.amount, currentDate, currentDate, reimbursement.description, 1, reimbursement.type]
         );
         if (result.rows[0]) {
             const reimbursement = result.rows[0];

@@ -2,7 +2,7 @@ import * as ReimbursementStatusDao from "../dao/reimbursementsDao";
 import { Reimbursement } from "../models/Reimbursements";
 
 export async function buildReimbursementsForPromiseAll(reimbursements): Promise<Reimbursement>{
-    console.log(reimbursements);
+    console.log("these are the reimbursement results" + reimbursements);
     return {
         reimbursementid: reimbursements.reimbursementid,
         author: reimbursements.author,

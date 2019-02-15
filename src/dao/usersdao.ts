@@ -69,15 +69,15 @@ export async function findUserById(id: number): Promise<Users> { //a more specif
 }
 export async function findUserByName(name: string): Promise<Users> { //a more specific find
   const client = await ConnectionPool.connect();
-  console.log('here');
-  try {
+  console.log(name);
     const result = await client.query(
       'SELECT * FROM project0.users WHERE username = $1',
       [name]
     );
- /*    console.log(result.rows[0]); */
-    const returnedUser = result.rows[0]; // there should only be 1 record
-    if (returnedUser) {
+    console.log(result.rows[0]);
+    client.release();
+    return result.rows[0]; // there should only be 1 record
+    /* if (returnedUser) {
       return {
         userid: returnedUser['userid'],
         username: returnedUser.username,
@@ -88,11 +88,11 @@ export async function findUserByName(name: string): Promise<Users> { //a more sp
         role: returnedUser.role
       };
     } else {
-      return undefined;
+      return returnedUser;
     }
   } finally {
-    client.release(); // release connection
-  }
+    client.release(); // release connection*/
+   
 }
 
 export async function update(req){ //update users info in database
@@ -122,10 +122,10 @@ export async function update(req){ //update users info in database
       } */
       console.log(userToBeUpdated);
       const returnQuery = await client.query(
-        `UPDATE project0.users set username = $1, password = $2, 
-        firstname = $3, lastname = $4, email = $5,
-         role = $7 WHERE userid = $6 returning *`,
-         [userToBeUpdated.username,userToBeUpdated.password,userToBeUpdated.firstname,userToBeUpdated.lastname,userToBeUpdated.email,
+        `UPDATE project0.users set username = $1, 
+        firstname = $2, lastname = $3, email = $4,
+         role = $5 WHERE userid = $6 returning *`,
+         [userToBeUpdated.username,,userToBeUpdated.firstname,userToBeUpdated.lastname,userToBeUpdated.email,
           userToBeUpdated.userid, userToBeUpdated.role]); //so this will update all the thing that it has supplied with the thing it has supplied, but leave it otherwise blank.
       return returnQuery.rows[0];
     }
